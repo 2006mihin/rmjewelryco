@@ -19,36 +19,6 @@ Route::post('/register', [UserAuthController::class, 'register'])->name('user.re
 
 Route::post('/logout', [UserAuthController::class, 'logout'])->name('logout');
 
-
-Route::middleware('auth')->group(function () {
-    Route::get('/home', function () {
-        return view('home'); // resources/views/home.blade.php
-    })->name('home');
-
-    // Profile page example
-    Route::get('/profile', function () {
-        return view('profile.show'); // resources/views/profile/show.blade.php
-    })->name('profile.show');
-});
-
-// 4️⃣ Static About Page
-Route::get('/about', function () {
-    return view('about'); // create resources/views/about.blade.php
-})->name('about');
-
-// 5️⃣ Product Routes
-Route::prefix('products')->group(function () {
-    Route::get('/rings', function () { return view('products.rings'); })->name('products.rings');
-    Route::get('/pendants', function () { return view('products.pendants'); })->name('products.pendants');
-    Route::get('/earrings', function () { return view('products.earrings'); })->name('products.earrings');
-    Route::get('/bracelets', function () { return view('products.bracelets'); })->name('products.bracelets');
-});
-
-// 6️⃣ Cart Route
-Route::get('/cart', function () {
-    return view('cart'); // create resources/views/cart.blade.php
-})->name('cart');
-
 // Admin login
 Route::middleware('guest:admin')->group(function() {
     Route::get('/admin/login', [AdminAuthController::class,'showLoginForm'])->name('admin.login');
@@ -60,3 +30,30 @@ Route::middleware('auth:admin')->group(function() {
     Route::get('/admin/dashboard', [AdminController::class,'dashboard'])->name('admin.dashboard');
     Route::post('/admin/logout', [AdminAuthController::class,'logout'])->name('admin.logout');
 });
+
+
+Route::middleware('auth')->group(function () {
+    Route::get('/home', function () {
+        return view('home'); // resources/views/home.blade.php
+    })->name('home');
+
+});
+
+Route::get('/about', function () {
+    return view('about'); 
+})->name('about');
+
+
+Route::prefix('products')->group(function () {
+    Route::get('/products/rings', function () { return view('products.rings'); })->name('products.rings');
+    Route::get('/products/pendants', function () { return view('products.pendants'); })->name('products.pendants');
+    Route::get('/products/earrings', function () { return view('products.earrings'); })->name('products.earrings');
+    Route::get('/products/bracelets', function () { return view('products.bracelets'); })->name('products.bracelets');
+    
+});
+
+
+Route::get('/cart', function () {
+    return view('cart'); // create resources/views/cart.blade.php
+})->name('cart');
+

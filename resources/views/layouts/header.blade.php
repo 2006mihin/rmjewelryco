@@ -57,15 +57,18 @@
     <a href="{{ url('/cart') }}" class="block py-2 hover:text-blue-600">CART</a>
 
     @auth
-      <a href="{{ route('profile.show') }}" class="block py-2 hover:text-blue-600">Profile</a>
-      <form method="POST" action="{{ route('logout') }}">
-        @csrf
-        <button type="submit" class="w-full text-left py-2 hover:text-red-600">Logout</button>
-      </form>
-    @else
-      <a href="{{ route('login') }}" class="block py-2 hover:text-blue-600">Sign In</a>
-      <a href="{{ route('register') }}" class="block py-2 hover:text-blue-600">Sign Up</a>
-    @endauth
+        <a href="{{ route('profile.show') }}" class="hover:text-blue-600 flex items-center space-x-1">
+          <i class="fa fa-user text-xl"></i>
+          <span>Profile</span>
+        </a>
+        <form method="POST" action="{{ route('logout') }}">
+          @csrf
+          <button type="submit" class="hover:text-red-600">Logout</button>
+        </form>
+      @else
+        <a href="{{ route('login') }}" class="hover:text-blue-600">Sign In</a>
+        <a href="{{ route('register') }}" class="hover:text-blue-600">Sign Up</a>
+      @endauth 
   </div>
 </header>
 
