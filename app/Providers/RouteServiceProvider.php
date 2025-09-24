@@ -11,7 +11,7 @@ class RouteServiceProvider extends ServiceProvider
      * The path to the "home" route for users.
      * Typically used after login for redirect.
      */
-    public const HOME = '/dashboard';       // For normal users
+    public const HOME = '/home';
     public const ADMIN_HOME = '/admin/dashboard'; // For admins
 
     /**

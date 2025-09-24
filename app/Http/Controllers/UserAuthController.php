@@ -16,50 +16,44 @@ class UserAuthController extends Controller
     }
 
     // Handle login
-    public function login(Request $request)
-    {
-        $request->validate([
-            'email'    => 'required|email',
-            'password' => 'required|string',
-        ]);
+public function login(Request $request)
+{
+    $request->validate([
+        'email'    => 'required|email',
+        'password' => 'required|string',
+    ]);
 
-        $credentials = $request->only('email', 'password');
+    $credentials = $request->only('email', 'password');
 
-        if (Auth::guard('web')->attempt($credentials)) {
-            $request->session()->regenerate();
-            return redirect()->route('user.dashboard'); // ✅ use route name
-        }
-
-        return back()->withErrors([
-            'email' => 'Invalid email or password.'
-        ])->onlyInput('email');
+    if (Auth::guard('web')->attempt($credentials)) {
+        $request->session()->regenerate();
+        return redirect('home'); // 👈 redirect to homepage
     }
 
-    // Show register form
-    public function showRegisterForm()
-    {
-        return view('auth.register'); // register.blade.php
-    }
+    return back()->withErrors([
+        'email' => 'Invalid email or password.'
+    ])->onlyInput('email');
+}
 
-    // Handle registration
-    public function register(Request $request)
-    {
-        $request->validate([
-            'name'                  => 'required|string|max:255',
-            'email'                 => 'required|email|unique:users,email',
-            'password'              => 'required|string|min:6|confirmed',
-        ]);
+// Handle registration
+public function register(Request $request)
+{
+    $request->validate([
+        'name'                  => 'required|string|max:255',
+        'email'                 => 'required|email|unique:users,email',
+        'password'              => 'required|string|min:6|confirmed',
+    ]);
 
-        $user = User::create([
-            'name'     => $request->name,
-            'email'    => $request->email,
-            'password' => Hash::make($request->password),
-        ]);
+    $user = User::create([
+        'name'     => $request->name,
+        'email'    => $request->email,
+        'password' => Hash::make($request->password),
+    ]);
 
-        Auth::login($user);
+    Auth::login($user);
 
-        return redirect()->route('user.dashboard'); // ✅ use route name
-    }
+    return redirect('home'); // 👈 redirect to homepage
+}
 
     // Handle logout
     public function logout(Request $request)
