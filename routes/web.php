@@ -25,23 +25,23 @@ Route::post('/logout', [UserAuthController::class, 'logout'])->name('logout');
 
 
 
-// Admin authentication
-Route::middleware('guest:admin')->group(function () {
-    Route::get('/admin/login', [AdminAuthController::class,'showLoginForm'])->name('admin.login');
-    Route::post('/admin/login', [AdminAuthController::class,'login'])->name('admin.login.submit');
-});
 
-// Admin dashboard
-Route::middleware('auth:admin')->group(function () {
-    Route::get('/admin/dashboard', [AdminController::class,'dashboard'])->name('admin.dashboard');
-    Route::post('/admin/logout', [AdminAuthController::class,'logout'])->name('admin.logout');
+
+// Admin authentication routes
+Route::get('/admin/login', [AdminAuthController::class,'showLoginForm'])->name('admin.login');
+Route::post('/admin/login', [AdminAuthController::class,'login'])->name('admin.login.submit');
+Route::post('/admin/logout', [AdminAuthController::class,'logout'])->name('admin.logout');
+
+// Admin dashboard route (no middleware, check in controller)
+Route::get('/admin/dashboard', [AdminController::class,'dashboard'])->name('admin.dashboard');
+
 
 
     // CRUD routes
     Route::get('/orders', [OrderController::class, 'index'])->name('orders');
     Route::resource('/products', ProductController::class);
     Route::resource('/users', UserController::class);
-});
+
 
 
 // ---------------- Authenticated User Home ----------------

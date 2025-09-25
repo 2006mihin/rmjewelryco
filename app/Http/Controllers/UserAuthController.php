@@ -16,53 +16,54 @@ class UserAuthController extends Controller
     }
 
     // Handle login
-public function login(Request $request)
-{
-    $request->validate([
-        'email'    => 'required|email',
-        'password' => 'required|string',
-    ]);
+    public function login(Request $request)
+    {
+        $request->validate([
+            'email'    => 'required|email',
+            'password' => 'required|string',
+        ]);
 
-    $credentials = $request->only('email', 'password');
+        $credentials = $request->only('email', 'password');
 
-    if (Auth::guard('web')->attempt($credentials)) {
-        $request->session()->regenerate();
-        return redirect('home'); // 👈 redirect to homepage
+        if (Auth::guard('web')->attempt($credentials)) {
+            $request->session()->regenerate();
+            return redirect('home'); // 👈 redirect to homepage
+        }
+
+        return back()->withErrors([
+            'email' => 'Invalid email or password.'
+        ])->onlyInput('email');
     }
 
-    return back()->withErrors([
-        'email' => 'Invalid email or password.'
-    ])->onlyInput('email');
-}
+    // Handle registration
+    public function register(Request $request)
+    {
+        $request->validate([
+            'name'                  => 'required|string|max:255',
+            'email'                 => 'required|email|unique:users,email',
+            'password'              => 'required|string|min:6|confirmed',
+        ]);
 
-// Handle registration
-public function register(Request $request)
-{
-    $request->validate([
-        'name'                  => 'required|string|max:255',
-        'email'                 => 'required|email|unique:users,email',
-        'password'              => 'required|string|min:6|confirmed',
-    ]);
+        $user = User::create([
+            'name'     => $request->name,
+            'email'    => $request->email,
+            'password' => Hash::make($request->password),
+        ]);
 
-    $user = User::create([
-        'name'     => $request->name,
-        'email'    => $request->email,
-        'password' => Hash::make($request->password),
-    ]);
+        Auth::login($user);
 
-    Auth::login($user);
-
-    return redirect('home'); // 👈 redirect to homepage
-}
+        return redirect('home'); // 👈 redirect to homepage
+    }
 
     // Handle logout
     public function logout(Request $request)
     {
-        Auth::logout();
+        Auth::guard('web')->logout();
 
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
-        return redirect()->route('user.login'); // redirect to login
+        // Redirect to welcome page instead of login
+        return redirect()->route('welcome');
     }
 }

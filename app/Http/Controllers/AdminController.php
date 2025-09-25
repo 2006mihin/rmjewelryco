@@ -12,11 +12,11 @@ class AdminController extends Controller
 {
     public function dashboard()
     {
+        // Check if admin is logged in
         if (!Auth::guard('admin')->check()) {
-            abort(403, 'Unauthorized access');
+            return redirect()->route('admin.login'); // redirect to admin login
         }
 
-        // Counts (safe defaults if models missing)
         $totalOrders    = class_exists(Order::class) ? Order::count() : 0;
         $totalProducts  = class_exists(Product::class) ? Product::count() : 0;
         $totalUsers     = class_exists(User::class) ? User::count() : 0;
