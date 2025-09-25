@@ -9,36 +9,31 @@
 </head>
 <body class="font-sans antialiased bg-gray-100">
     <div class="min-h-screen flex flex-col">
-
-        <!-- Header -->
-        <header class="bg-white shadow sticky top-0 z-50">
-            <div class="container mx-auto flex justify-between items-center px-4 py-4">
+        <nav class="bg-white shadow p-4">
+            <div class="container mx-auto flex justify-between items-center">
                 <a href="{{ url('/') }}" class="text-lg font-bold">RM Jewelry</a>
-
-                <div class="flex items-center space-x-4">
+                <div>
                     @auth
                         <!-- Logged in user -->
-                        <a href="{{ route('home') }}" class="hover:text-blue-600">Home</a>
-                        <a href="{{ route('profile.show') }}" class="hover:text-blue-600">Profile</a>
-                        <form method="POST" action="{{ route('logout') }}">
+                        <a href="{{ route('home') }}" class="mr-4">Home</a>
+                        <a href="{{ route('profile.show') }}" class="mr-4">Profile</a>
+                        <form method="POST" action="{{ route('logout') }}" class="inline">
                             @csrf
-                            <button type="submit" class="hover:text-red-600">Logout</button>
+                            <button type="submit" class="text-red-600">Logout</button>
                         </form>
                     @else
                         <!-- Guest -->
-                        <a href="{{ route('login') }}" class="hover:text-blue-600">Login</a>
-                        <a href="{{ route('register') }}" class="hover:text-blue-600">Sign Up</a>
+                        <a href="{{ route('login') }}" class="mr-4">Login</a>
+                        <a href="{{ route('register') }}">Register</a>
                     @endauth
                 </div>
             </div>
-        </header>
+        </nav>
 
-        <!-- Page content -->
         <main class="flex-grow p-6">
             @yield('content')
         </main>
 
-        <!-- Footer -->
         <footer class="bg-gray-200 shadow p-4 text-center">
             &copy; {{ date('Y') }} RM Jewelry. All rights reserved.
         </footer>
