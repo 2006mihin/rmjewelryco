@@ -3,58 +3,147 @@
 namespace App\Http\Controllers;
 
 use App\Models\Product;
-use App\Http\Resources\ProductResource;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ProductController extends Controller
 {
+    /**
+     * List all products with category info.
+     */
     public function index()
     {
-        return ProductResource::collection(Product::with(['category','admin'])->get());
+        return Product::with('category')->get();
     }
 
+    /**
+     * Store a new product.
+     */
     public function store(Request $request)
     {
-        $data = $request->validate([
-            'product_name' => 'required|string',
-            'description'  => 'nullable|string',
-            'price'        => 'required|numeric',
-            'quantity'     => 'required|integer',
-            'image'        => 'nullable|string',
-            'category_id'  => 'required|exists:categories,id',
-            'admin_id'     => 'required|exists:admins,id',
-        ]);
+        try {
+            // Validate incoming data
+            $request->validate([
+                'product_name' => 'required|string|max:255',
+                'price'        => 'required|numeric',
+                'quantity'     => 'required|integer',
+                'category_id'  => 'required|exists:categories,id',
+                'image'        => 'nullable|image|mimes:jpg,jpeg,png,gif|max:2048',
+                'description'  => 'nullable|string',
+            ]);
 
-        $product = Product::create($data);
-        return new ProductResource($product);
+            $data = $request->only([
+                'product_name', 'price', 'quantity', 'category_id', 'description'
+            ]);
+            $data['admin_id'] = Auth::id() ?? 1;
+            
+
+            // Handle image upload
+            if ($request->hasFile('image')) {
+                $image = $request->file('image');
+                $imageName = time() . '_' . $image->getClientOriginalName();
+                $image->move(public_path('images/products'), $imageName);
+                $data['image'] = 'images/products/' . $imageName;
+            }
+
+            $product = Product::create($data);
+
+            return response()->json([
+                'success' => true,
+                'product' => $product
+            ], 201);
+
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Validation failed',
+                'errors'  => $e->errors()
+            ], 422);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => $e->getMessage()
+            ], 500);
+        }
     }
 
+    /**
+     * Show a single product
+     */
     public function show($id)
     {
-        return new ProductResource(Product::with(['category','admin'])->findOrFail($id));
+        $product = Product::with('category')->findOrFail($id);
+        return response()->json($product);
     }
 
+    /**
+     * Update an existing product
+     */
     public function update(Request $request, $id)
     {
         $product = Product::findOrFail($id);
 
-        $data = $request->validate([
-            'product_name' => 'sometimes|string',
-            'description'  => 'nullable|string',
-            'price'        => 'sometimes|numeric',
-            'quantity'     => 'sometimes|integer',
-            'image'        => 'nullable|string',
-            'category_id'  => 'sometimes|exists:categories,id',
-            'admin_id'     => 'sometimes|exists:admins,id',
-        ]);
+        try {
+            $request->validate([
+                'product_name' => 'required|string|max:255',
+                'price'        => 'required|numeric',
+                'quantity'     => 'required|integer',
+                'category_id'  => 'required|exists:categories,id',
+                'image'        => 'nullable|image|mimes:jpg,jpeg,png,gif|max:2048',
+                'description'  => 'nullable|string',
+            ]);
 
-        $product->update($data);
-        return new ProductResource($product);
+            $data = $request->only([
+                'product_name', 'price', 'quantity', 'category_id', 'description'
+            ]);
+
+            if ($request->hasFile('image')) {
+                $image = $request->file('image');
+                $imageName = time() . '_' . $image->getClientOriginalName();
+                $image->move(public_path('images/products'), $imageName);
+                $data['image'] = 'images/products/' . $imageName;
+            }
+
+            $product->update($data);
+
+            return response()->json([
+                'success' => true,
+                'product' => $product
+            ]);
+
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Validation failed',
+                'errors'  => $e->errors()
+            ], 422);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => $e->getMessage()
+            ], 500);
+        }
     }
 
+    /**
+     * Delete a product
+     */
     public function destroy($id)
     {
-        Product::findOrFail($id)->delete();
-        return response()->json(['message' => 'Product deleted successfully']);
+        try {
+            $product = Product::findOrFail($id);
+            $product->delete();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Product deleted successfully'
+            ], 200);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => $e->getMessage()
+            ], 500);
+        }
     }
 }

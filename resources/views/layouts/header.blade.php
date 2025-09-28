@@ -17,11 +17,12 @@
       <div class="relative group">
         <button class="hover:text-blue-600 flex items-center">JEWELRIES <i class="fa fa-caret-down ml-1"></i></button>
         <div class="absolute hidden group-hover:block bg-white shadow-lg mt-1 rounded w-40 z-10">
-          <a href="{{ route('products.rings') }}" class="block px-4 py-2 hover:bg-gray-100">Rings</a>
-          <a href="{{ route('products.pendants') }}" class="block px-4 py-2 hover:bg-gray-100">Pendants</a>
-          <a href="{{ route('products.earrings') }}" class="block px-4 py-2 hover:bg-gray-100">Earrings</a>
-          <a href="{{ route('products.bracelets') }}" class="block px-4 py-2 hover:bg-gray-100">Bracelets</a>
-        </div>
+    <a href="{{ route('products.rings') }}" class="block px-4 py-2 hover:bg-gray-100">Rings</a>
+    <a href="{{ route('products.pendants') }}" class="block px-4 py-2 hover:bg-gray-100">Pendants</a>
+    <a href="{{ route('products.earrings') }}" class="block px-4 py-2 hover:bg-gray-100">Earrings</a>
+    <a href="{{ route('products.bracelets') }}" class="block px-4 py-2 hover:bg-gray-100">Bracelets</a>
+</div>
+
       </div>
       <a href="{{ url('/cart') }}" class="hover:text-blue-600">CART</a>
     </nav>
@@ -51,12 +52,11 @@
 
     <details class="bg-white">
       <summary class="py-2 cursor-pointer hover:text-blue-600">JEWELRIES</summary>
-      <div class="pl-4">
-        <a href="{{ route('products.rings') }}" class="block py-1 hover:text-blue-600">Rings</a>
-        <a href="{{ route('products.pendants') }}" class="block py-1 hover:text-blue-600">Pendants</a>
-        <a href="{{ route('products.earrings') }}" class="block py-1 hover:text-blue-600">Earrings</a>
-        <a href="{{ route('products.bracelets') }}" class="block py-1 hover:text-blue-600">Bracelets</a>
-      </div>
+      <a href="{{ route('products.rings') }}" class="block py-1 hover:text-blue-600">Rings</a>
+<a href="{{ route('products.pendants') }}" class="block py-1 hover:text-blue-600">Pendants</a>
+<a href="{{ route('products.earrings') }}" class="block py-1 hover:text-blue-600">Earrings</a>
+<a href="{{ route('products.bracelets') }}" class="block py-1 hover:text-blue-600">Bracelets</a>
+
     </details>
 
     <a href="{{ url('/cart') }}" class="block py-2 hover:text-blue-600">CART</a>

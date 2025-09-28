@@ -7,81 +7,66 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\OrderController;
+use App\Models\Product;
+use App\Http\Controllers\ProductPageController;
 
 
+/*User Authentication Routes*/
+Route::controller(UserAuthController::class)->group(function () {
+    Route::get('/login', 'showLoginForm')->name('user.login');
+    Route::post('/login', 'login')->name('user.login.submit');
+    Route::get('/register', 'showRegisterForm')->name('user.register');
+    Route::post('/register', 'register')->name('user.register.submit');
+    Route::post('/logout', 'logout')->name('logout');
+});
 
-// ---------------- Public Landing Page ----------------
-Route::get('/', function () {
-    return view('welcome');   
-})->name('welcome');
+/*Admin Authentication Routes*/
+Route::controller(AdminAuthController::class)->group(function () {
+    Route::get('/admin/login', 'showLoginForm')->name('admin.login');
+    Route::post('/admin/login', 'login')->name('admin.login.submit');
+    Route::post('/admin/logout', 'logout')->name('admin.logout');
+});
 
-
-// ---------------- User Authentication ----------------
-Route::get('/login', [UserAuthController::class, 'showLoginForm'])->name('user.login');
-Route::post('/login', [UserAuthController::class, 'login'])->name('user.login.submit');
-
-Route::get('/register', [UserAuthController::class, 'showRegisterForm'])->name('user.register');
-Route::post('/register', [UserAuthController::class, 'register'])->name('user.register.submit');
-
-
-Route::post('/logout', [UserAuthController::class, 'logout'])->name('logout');
-
-
-
-
-
-
-// Admin authentication routes
-Route::get('/admin/login', [AdminAuthController::class,'showLoginForm'])->name('admin.login');
-Route::post('/admin/login', [AdminAuthController::class,'login'])->name('admin.login.submit');
-Route::post('/admin/logout', [AdminAuthController::class,'logout'])->name('admin.logout');
-
-// Admin dashboard route (no middleware, check in controller)
-Route::get('/admin/dashboard', [AdminController::class,'dashboard'])->name('admin.dashboard');
-
-
-
-    // CRUD routes
-    Route::get('/orders', [OrderController::class, 'index'])->name('orders');
-    Route::resource('/products', ProductController::class);
-    Route::resource('/users', UserController::class);
-
-
-
-
-// ---------------- Authenticated User Home ----------------
+/*Authenticated User Routes*/
 Route::middleware('auth')->group(function () {
-    Route::get('/home', function () {
-        return view('home'); 
-    })->name('home');
+    Route::get('/home', fn() => view('home'))->name('home');
 });
 
 
 
+/*Public Routes*/
+// Landing Page
+Route::get('/', fn() => view('welcome'))->name('welcome');
 
-// ---------------- Public Pages ----------------
-Route::get('/about', function () {
-    return view('about');
-})->name('about');
+// About Page
+Route::get('/about', fn() => view('about'))->name('about');
 
-Route::prefix('products')->group(function () {
-    Route::get('/rings', function () {
-        return view('products.rings');
-    })->name('products.rings');
+// Cart Page
+Route::get('/cart', fn() => view('cart'))->name('cart');
 
-    Route::get('/pendants', function () {
-        return view('products.pendants');
-    })->name('products.pendants');
+// Jewelry Product Pages
+Route::get('/products/rings', [ProductPageController::class, 'rings'])->name('products.rings');
+Route::get('/products/pendants', [ProductPageController::class, 'pendants'])->name('products.pendants');
+Route::get('/products/earrings', [ProductPageController::class, 'earrings'])->name('products.earrings');
+Route::get('/products/bracelets', [ProductPageController::class, 'bracelets'])->name('products.bracelets');
 
-    Route::get('/earrings', function () {
-        return view('products.earrings');
-    })->name('products.earrings');
+/*
+|--------------------------------------------------------------------------
+| Admin Routes (Protected)
+|--------------------------------------------------------------------------
+*/
+Route::middleware(['auth:admin'])->prefix('admin')->group(function () {
+    
+    // Dashboard
+    Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
 
-    Route::get('/bracelets', function () {
-        return view('products.bracelets');
-    })->name('products.bracelets');
+    // Product Management View
+    Route::get('/products/manage', fn() => view('admin.productmanage'))->name('admin.products.manage');
+
+    // Resource Controllers
+    Route::resources([
+        'products' => ProductController::class,
+        'users'    => UserController::class,
+        'orders'   => OrderController::class,
+    ]);
 });
-
-Route::get('/cart', function () {
-    return view('cart'); // resources/views/cart.blade.php
-})->name('cart');
