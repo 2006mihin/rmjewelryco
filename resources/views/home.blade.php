@@ -75,9 +75,9 @@
     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
         @php
             $items = [
-                ['img' => 'hring.jpg', 'desc' => 'Natural Garnet', 'name' => 'Red Garnet Ring', 'price' => 'Rs 12,500.00', 'link' => 'rings'],
-                ['img' => 'hpendant.jpg', 'desc' => 'Topaz, Amethyst, Garnet, Citrine', 'name' => 'Multi-Coloured Gemstones Pendant', 'price' => 'Rs 22,000.00', 'link' => 'pendants'],
-                ['img' => 'hear.jpg', 'desc' => 'Blue Topaz', 'name' => 'Cocktail Drop Earrings', 'price' => 'Rs 17,200.00', 'link' => 'earrings'],
+                ['img' => 'hring.jpg', 'desc' => 'Natural Garnet', 'name' => 'Red Garnet Ring', 'price' => 'Rs 12,500.00', 'link' => 'products/rings'],
+                ['img' => 'hpendant.jpg', 'desc' => 'Topaz, Amethyst, Garnet, Citrine', 'name' => 'Multi-Coloured Gemstones Pendant', 'price' => 'Rs 22,000.00', 'link' => 'products/pendants'],
+                ['img' => 'hear.jpg', 'desc' => 'Blue Topaz', 'name' => 'Cocktail Drop Earrings', 'price' => 'Rs 17,200.00', 'link' => 'products/earrings'],
             ];
         @endphp
 
