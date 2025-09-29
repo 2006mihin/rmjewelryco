@@ -5,6 +5,7 @@ use App\Http\Controllers\UserAuthController;
 use App\Http\Controllers\AdminAuthController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ProductPageController;
+use App\Livewire\CartPage;
 
 // Public pages
 Route::get('/', fn() => view('welcome'))->name('welcome');
@@ -36,3 +37,11 @@ Route::get('/admin/products/manage', fn() => view('admin.productmanage'))->name(
 
 // Authenticated user home
 Route::get('/home', fn() => view('home'))->name('home');
+
+
+Route::get('/rings', [ProductController::class, 'showRings'])->name('rings');
+
+// Cart page route (Blade including Livewire component)
+Route::get('/cart', function () {
+    return view('cart'); // resources/views/cart.blade.php
+})->name('cart');
