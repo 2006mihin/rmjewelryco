@@ -1,6 +1,5 @@
 <?php
 
-// database/seeders/CategorySeeder.php
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
@@ -10,10 +9,12 @@ class CategorySeeder extends Seeder
 {
     public function run(): void
     {
-        $categories = ['rings', 'earrings', 'pendants', 'bracelets'];
+        $categories = ['Rings', 'Earrings', 'Pendants', 'Bracelets'];
 
-        foreach ($categories as $cat) {
-            Category::firstOrCreate(['category_name' => $cat]);
+        foreach ($categories as $name) {
+            Category::updateOrCreate(
+                ['category_name' => $name]
+            );
         }
     }
 }

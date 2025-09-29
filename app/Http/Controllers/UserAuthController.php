@@ -4,42 +4,38 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use App\Models\User;
 use Illuminate\Support\Facades\Hash;
+use App\Models\User;
+use Illuminate\Validation\ValidationException;
 
 class UserAuthController extends Controller
 {
-    // Show login form
+    // ----------------- WEB -----------------
     public function showLoginForm()
     {
-        return view('auth.login'); // resources/views/auth/login.blade.php
+        return view('auth.login');
     }
 
-    // Show register form
     public function showRegisterForm()
     {
-        return view('auth.register'); // resources/views/auth/register.blade.php
+        return view('auth.register');
     }
 
-    // Handle login
     public function login(Request $request)
     {
         $request->validate([
-            'email'    => 'required|email',
+            'email' => 'required|email',
             'password' => 'required|string',
         ]);
 
-        if (Auth::attempt($request->only('email', 'password'))) {
+        if (Auth::guard('web')->attempt($request->only('email', 'password'))) {
             $request->session()->regenerate();
             return redirect()->intended('home');
         }
 
-        return back()->withErrors([
-            'email' => 'Invalid credentials.',
-        ])->onlyInput('email');
+        return back()->withErrors(['email' => 'Invalid credentials.'])->onlyInput('email');
     }
 
-    // Handle registration
     public function register(Request $request)
     {
         $request->validate([
@@ -54,17 +50,51 @@ class UserAuthController extends Controller
             'password' => Hash::make($request->password),
         ]);
 
-        Auth::login($user); // auto-login after registration
+        Auth::guard('web')->login($user);
+
         return redirect('home');
     }
 
-    // Handle logout
     public function logout(Request $request)
     {
-        Auth::logout();
+        Auth::guard('web')->logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
-
         return redirect()->route('welcome');
+    }
+
+    // ----------------- API -----------------
+    public function apiLogin(Request $request)
+    {
+        $request->validate([
+            'email' => 'required|email',
+            'password' => 'required|string',
+        ]);
+
+        $user = User::where('email', $request->email)->first();
+
+        if (!$user || !Hash::check($request->password, $user->password)) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Invalid credentials.'
+            ], 401);
+        }
+
+        $token = $user->createToken('user-api-token')->plainTextToken;
+
+        return response()->json([
+            'status' => 'success',
+            'token' => $token,
+            'user' => $user->only(['id', 'name', 'email']),
+        ]);
+    }
+
+    public function apiLogout(Request $request)
+    {
+        if ($request->user()) {
+            $request->user()->currentAccessToken()->delete();
+        }
+
+        return response()->json(['message' => 'Logged out successfully']);
     }
 }

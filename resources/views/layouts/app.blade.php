@@ -23,8 +23,8 @@
                         </form>
                     @else
                         <!-- Guest -->
-                        <a href="{{ route('login') }}" class="mr-4">Login</a>
-                        <a href="{{ route('register') }}">Register</a>
+                        <a href="{{ route('user.login') }}" class="mr-4">Login</a> <!-- FIXED: user.login -->
+                        <a href="{{ route('user.register') }}">Register</a> <!-- FIXED: user.register -->
                     @endauth
                 </div>
             </div>

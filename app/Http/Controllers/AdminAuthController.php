@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Admin;
 
 class AdminAuthController extends Controller
 {
@@ -21,23 +22,19 @@ class AdminAuthController extends Controller
 
         $credentials = $request->only('email', 'password');
 
-        if (Auth::guard('admin')->attempt($credentials, $request->filled('remember'))) {
+        if (Auth::guard('admin')->attempt($credentials)) {
             $request->session()->regenerate();
-            return redirect()->intended(route('admin.dashboard'));
+            return redirect('/admin/dashboard');
         }
 
-        return back()->withErrors([
-            'email' => 'Invalid credentials. Please try again.',
-        ])->withInput();
+        return back()->withErrors(['email' => 'Invalid credentials'])->withInput();
     }
 
     public function logout(Request $request)
-{
-    Auth::guard('admin')->logout();
-    $request->session()->invalidate();
-    $request->session()->regenerateToken();
-
-    return redirect()->route('welcome'); // send to welcome page
-}
-
+    {
+        Auth::guard('admin')->logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+        return redirect('/admin/login');
+    }
 }

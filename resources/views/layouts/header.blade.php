@@ -39,8 +39,8 @@
           <button type="submit" class="hover:text-red-600">Logout</button>
         </form>
       @else
-        <a href="{{ route('login') }}" class="hover:text-blue-600">Sign In</a>
-        <a href="{{ route('register') }}" class="hover:text-blue-600">Sign Up</a>
+      <a href="{{ route('user.login') }}" class="block py-2 hover:text-blue-600">Sign In</a>
+<a href="{{ route('user.register') }}" class="block py-2 hover:text-blue-600">Sign Up</a>
       @endauth
     </div>
   </div>
@@ -71,8 +71,8 @@
         <button type="submit" class="w-full text-left py-2 hover:text-red-600">Logout</button>
       </form>
     @else
-      <a href="{{ route('login') }}" class="block py-2 hover:text-blue-600">Sign In</a>
-      <a href="{{ route('register') }}" class="block py-2 hover:text-blue-600">Sign Up</a>
+    <a href="{{ route('user.login') }}" class="hover:text-blue-600">Sign In</a>
+<a href="{{ route('user.register') }}" class="hover:text-blue-600">Sign Up</a>
     @endauth
   </div>
 </header>

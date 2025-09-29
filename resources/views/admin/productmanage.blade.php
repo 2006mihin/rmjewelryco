@@ -72,7 +72,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const imageInput = document.getElementById('image');
     const productList = document.getElementById('productList');
 
-    // Load categories into dropdown
+    // Load categories
     axios.get('/api/categories')
         .then(res => {
             res.data.forEach(cat => {
@@ -84,7 +84,7 @@ document.addEventListener('DOMContentLoaded', () => {
         })
         .catch(err => console.error('Error loading categories:', err));
 
-    // Load products into table
+    // Load products
     function loadProducts() {
         axios.get('/api/products')
             .then(res => {
@@ -120,18 +120,23 @@ document.addEventListener('DOMContentLoaded', () => {
         let id = productIdInput.value;
         let formData = new FormData();
         formData.append('product_name', productNameInput.value);
-        formData.append('price', parseFloat(priceInput.value));
-        formData.append('quantity', parseInt(quantityInput.value));
-        formData.append('category_id', parseInt(categoryIdSelect.value));
+        formData.append('price', parseFloat(priceInput.value) || 0);
+        formData.append('quantity', parseInt(quantityInput.value) || 0);
+        formData.append('category_id', parseInt(categoryIdSelect.value) || null);
         formData.append('admin_id', 1); // default admin for now
         if (imageInput.files[0]) formData.append('image', imageInput.files[0]);
 
+        // If updating, add method spoofing to the form data
         let url = '/api/products' + (id ? `/${id}` : '');
-        let params = id ? { _method: 'PUT' } : {};
+        if (id) {
+            formData.append('_method', 'PUT');
+        }
 
+        // IMPORTANT: do NOT set Content-Type header manually for multipart/form-data.
         axios.post(url, formData, {
-            headers: { 'Content-Type': 'multipart/form-data' },
-            params: params
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest'
+            }
         })
         .then(res => {
             alert(id ? 'Product updated' : 'Product saved');
@@ -140,8 +145,14 @@ document.addEventListener('DOMContentLoaded', () => {
             loadProducts();
         })
         .catch(err => {
-            console.error('Save failed:', err.response.data);
-            alert('Failed to save product. Check console for details.');
+            // safer logging: show full error object then any returned response body
+            console.error('Save failed:', err);
+            if (err.response) {
+                console.error('Server response:', err.response.data);
+                alert('Failed to save product: ' + (err.response.data.message || 'Server error. See console.'));
+            } else {
+                alert('Failed to save product. See console for details.');
+            }
         });
     });
 
@@ -172,5 +183,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 </script>
+
 </body>
 </html>

@@ -23,10 +23,19 @@ Route::get('/ping', function () {
     return response()->json(['message' => 'API is working!']);
 });
 
-// ------------------ Public User Routes ------------------
-// Example: user registration or login could be here if needed
-// Route::post('/user/login', [UserAuthController::class, 'login']);
-// Route::post('/user/register', [UserAuthController::class, 'register']);
+// ------------------ Public Product Routes ------------------
+Route::get('/products', [ProductController::class, 'index']);       // List all products
+Route::get('/products/{id}', [ProductController::class, 'show']);   // Get single product
+
+// ------------------ Public Category Routes ------------------
+Route::get('/categories', [CategoryController::class, 'index']);    // List all categories
+
+// ------------------ Public Product WRITE routes (quick/simple fix) ------------------
+// NOTE: moving create/update/delete here removes the auth:sanctum requirement.
+// If you need auth later, move these back inside a protected group or implement Sanctum session/tokens.
+Route::post('/products', [ProductController::class, 'store']);
+Route::put('/products/{id}', [ProductController::class, 'update']);
+Route::delete('/products/{id}', [ProductController::class, 'destroy']);
 
 // ------------------ Protected API Routes ------------------
 Route::middleware('auth:sanctum')->group(function () {
@@ -37,11 +46,10 @@ Route::middleware('auth:sanctum')->group(function () {
     // Admins CRUD
     Route::apiResource('admins', AdminController::class);
 
-    // Categories CRUD
-    Route::apiResource('categories', CategoryController::class);
-
-    // Products CRUD (Admin side)
-    Route::apiResource('products', ProductController::class);
+    // Categories CRUD (protected routes for create, update, delete)
+    Route::post('/categories', [CategoryController::class, 'store']);
+    Route::put('/categories/{id}', [CategoryController::class, 'update']);
+    Route::delete('/categories/{id}', [CategoryController::class, 'destroy']);
 
     // Orders CRUD
     Route::apiResource('orders', OrderController::class);
@@ -51,21 +59,10 @@ Route::middleware('auth:sanctum')->group(function () {
 
     // Shipments CRUD
     Route::apiResource('shipments', ShipmentController::class);
+
+    // Logout
+    Route::post('/logout', function (Request $request) {
+        $request->user()->currentAccessToken()->delete();
+        return response()->json(['message' => 'Logged out successfully']);
+    });
 });
-
-// ------------------ Authentication ------------------
-Route::post('/login', [AuthController::class, 'login']);
-Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
-
-// ------------------ Public Product Routes ------------------
-
-Route::get('/products', [ProductController::class, 'index']);       // List all products
-Route::post('/products', [ProductController::class, 'store']);      // Add product
-Route::get('/products/{id}', [ProductController::class, 'show']);   // Get single product
-Route::put('/products/{id}', [ProductController::class, 'update']); // Update product
-Route::delete('/products/{id}', [ProductController::class, 'destroy']); // Delete product
-
-Route::apiResource('products', ProductController::class);
-
-
-Route::get('/categories', [CategoryController::class, 'index']);
