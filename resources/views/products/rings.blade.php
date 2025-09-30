@@ -33,17 +33,14 @@
                         <p class="text-gray-800 mb-1">Rs {{ number_format($product->price, 2) }}</p>
                         <p class="text-gray-600 text-sm mb-3">Stock: {{ $product->quantity }}</p>
 
-                        <!-- Add to Cart -->
-                        <a href="{{ url('/cart?add=' . $product->id) }}" class="w-full inline-block px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition">
-    Add to Cart
-</a>
-                        </form>
+                        @livewire('add-to-cart', ['productId' => $product->id], key($product->id))
+ 
                     </div>
                 @endforeach
             </div>
         @else
             <p class="text-center text-gray-500">No products found.</p>
-        @endif
+        @endif 
     </section>
 
 </body>

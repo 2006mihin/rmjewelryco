@@ -2,50 +2,48 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Support\Facades\Auth;
-use App\Models\Order;
-use App\Models\Product;
-use App\Models\User;
+use Illuminate\Http\Request;
 use App\Models\Admin;
+use App\Models\User;
 
 class AdminController extends Controller
 {
-    // Admin Dashboard
-    public function dashboard()
+    // ----------------- WEB Dashboard -----------------
+    public function dashboardView()
     {
-        // Manual session check
-        if (!Auth::guard('admin')->check()) {
-            return redirect('/admin/login');
-        }
-
-        $totalOrders    = class_exists(Order::class) ? Order::count() : 0;
-        $totalProducts  = class_exists(Product::class) ? Product::count() : 0;
-        $userCount      = class_exists(User::class) ? User::count() : 0;
-        $adminCount     = class_exists(Admin::class) ? Admin::count() : 0;
-
-        $totalUsers     = $userCount + $adminCount;
-        $totalCustomers = $userCount;
-        $totalAdmins    = $adminCount;
+        $totalOrders    = \App\Models\Order::count();
+        $totalProducts  = \App\Models\Product::count();
+        $userCount      = User::count();
+        $adminCount     = Admin::count();
 
         return view('admin.dashboard', compact(
             'totalOrders',
             'totalProducts',
-            'totalUsers',
-            'totalCustomers',
-            'totalAdmins'
+            'userCount',
+            'adminCount'
         ));
     }
 
-    // View all users (Admins + Users)
-    public function viewUsers()
+    // ----------------- WEB Users Page -----------------
+    public function viewUsersWeb()
     {
-        if (!Auth::guard('admin')->check()) {
-            return redirect('/admin/login');
-        }
-
         $admins = Admin::all();
         $users  = User::all();
 
+        // Pass data to Blade view
         return view('admin.users', compact('admins', 'users'));
+    }
+
+    // ----------------- API Users (JSON) -----------------
+    public function viewUsersApi()
+    {
+        $admins = Admin::all(['id','name','email']);
+        $users  = User::all(['id','name','email','user_type','profile_photo_url']);
+
+        return response()->json([
+            'status' => 'success',
+            'admins' => $admins,
+            'users'  => $users,
+        ]);
     }
 }

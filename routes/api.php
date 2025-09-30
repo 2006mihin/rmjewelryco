@@ -2,67 +2,55 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-
-// Controllers
-use App\Http\Controllers\UserController;
+use App\Http\Controllers\AdminAuthController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\UserAuthController;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ShipmentController;
-use App\Http\Controllers\ProductController;
 
-/*
-|--------------------------------------------------------------------------
-| API Routes
-|--------------------------------------------------------------------------
-*/
+/*-------------------------------------------------
+| Public / Test Routes
+-------------------------------------------------*/
+Route::get('/ping', fn() => response()->json(['message' => 'API is working!']));
 
-// Test route (public)
-Route::get('/ping', function () {
-    return response()->json(['message' => 'API is working!']);
-});
+// User API login/logout
+Route::post('/login', [UserAuthController::class, 'apiLogin']);
+Route::post('/logout', [UserAuthController::class, 'apiLogout'])->middleware('auth:sanctum');
 
-// ------------------ Public Product Routes ------------------
-Route::get('/products', [ProductController::class, 'index']);       // List all products
-Route::get('/products/{id}', [ProductController::class, 'show']);   // Get single product
+// Admin API login/logout
+Route::post('/admin/login', [AdminAuthController::class, 'apiLogin']);
+Route::post('/admin/logout', [AdminAuthController::class, 'apiLogout'])->middleware('auth:sanctum');
 
-// ------------------ Public Category Routes ------------------
-Route::get('/categories', [CategoryController::class, 'index']);    // List all categories
+// Public product/category routes
+Route::get('/products', [ProductController::class, 'index']);
+Route::get('/products/{id}', [ProductController::class, 'show']);
+Route::get('/categories', [CategoryController::class, 'index']);
 
-// ------------------ Public Product WRITE routes (quick/simple fix) ------------------
-// NOTE: moving create/update/delete here removes the auth:sanctum requirement.
-// If you need auth later, move these back inside a protected group or implement Sanctum session/tokens.
+// Optional: public product write routes
 Route::post('/products', [ProductController::class, 'store']);
 Route::put('/products/{id}', [ProductController::class, 'update']);
 Route::delete('/products/{id}', [ProductController::class, 'destroy']);
 
-// ------------------ Protected API Routes ------------------
+/*-------------------------------------------------
+| Protected Routes (Sanctum)
+-------------------------------------------------*/
 Route::middleware('auth:sanctum')->group(function () {
-
-    // Users CRUD
     Route::apiResource('users', UserController::class);
-
-    // Admins CRUD
     Route::apiResource('admins', AdminController::class);
 
-    // Categories CRUD (protected routes for create, update, delete)
     Route::post('/categories', [CategoryController::class, 'store']);
     Route::put('/categories/{id}', [CategoryController::class, 'update']);
     Route::delete('/categories/{id}', [CategoryController::class, 'destroy']);
 
-    // Orders CRUD
     Route::apiResource('orders', OrderController::class);
-
-    // Payments CRUD
     Route::apiResource('payments', PaymentController::class);
-
-    // Shipments CRUD
     Route::apiResource('shipments', ShipmentController::class);
 
-    // Logout
-    Route::post('/logout', function (Request $request) {
-        $request->user()->currentAccessToken()->delete();
-        return response()->json(['message' => 'Logged out successfully']);
-    });
+    // Admin Dashboard
+    Route::get('/admin/dashboard', [AdminController::class, 'dashboard']);
+    Route::get('/admin/users', [AdminController::class, 'viewUsers']);
 });

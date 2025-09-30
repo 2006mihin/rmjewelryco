@@ -75,6 +75,8 @@
 <a href="{{ route('user.register') }}" class="hover:text-blue-600">Sign Up</a>
     @endauth
   </div>
+
+  
 </header>
 
 <script>

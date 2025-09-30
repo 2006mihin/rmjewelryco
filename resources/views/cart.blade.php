@@ -9,14 +9,12 @@
 </head>
 <body class="font-sans antialiased bg-white text-gray-800">
 
-@include('layouts.header')
+    @include('layouts.header')
 
-<section class="container mx-auto px-4 py-8">
-   
+    <section class="container mx-auto px-4 py-8">
+        @livewire('cart-page')
+    </section>
 
-    @livewire('cart-page')
-</section>
-
-@livewireScripts
+    @livewireScripts
 </body>
 </html>

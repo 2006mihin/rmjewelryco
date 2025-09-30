@@ -35,10 +35,10 @@ class CartPage extends Component
         } else {
             $cart[$productId] = [
                 'product_id' => $product->id,
-                'name' => $product->product_name,
-                'price' => $product->price,
-                'quantity' => 1,
-                'image' => $product->image,
+                'name'       => $product->product_name,
+                'price'      => $product->price,
+                'quantity'   => 1,
+                'image'      => $product->image,
             ];
         }
 
@@ -89,6 +89,6 @@ class CartPage extends Component
 
     public function render()
     {
-        return view('livewire.cart-page'); // your existing cart-page Blade
+        return view('livewire.cart-page');
     }
 }
