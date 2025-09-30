@@ -12,7 +12,7 @@
 @include('layouts.header')
 
 <section class="container mx-auto px-4 py-8">
-    <h2 class="text-2xl font-bold mb-6">Your Cart</h2>
+   
 
     @livewire('cart-page')
 </section>

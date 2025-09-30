@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Earrings</title>
-    @vite('resources/css/app.css')
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body class="bg-white text-gray-800">
 
@@ -26,9 +26,11 @@
                     <p class="text-gray-800 mb-1">Rs {{ number_format($product->price, 2) }}</p>
                     <p class="text-gray-600 text-sm mb-3">Stock: {{ $product->quantity }}</p>
 
-                    <button class="w-full px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition">
+                    <!-- Add to Cart -->
+                    <a href="{{ url('/cart?add=' . $product->id) }}" 
+                       class="w-full inline-block px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition">
                         Add to Cart
-                    </button>
+                    </a>
                 </div>
             @endforeach
         </div>
@@ -37,6 +39,5 @@
         @endif
     </section>
 
-    @vite('resources/js/app.js')
 </body>
 </html>
