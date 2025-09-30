@@ -7,6 +7,7 @@
     @vite('resources/css/app.css')
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" 
           integrity="sha512-pap9c3n6EhxyU3fB/..." crossorigin="anonymous" referrerpolicy="no-referrer" />
+          
 </head>
 <body class="bg-white text-gray-800">
 
@@ -94,6 +95,8 @@
         @endforeach
     </div>
 </section>
+@include('layouts.footer')
+
 
 <script>
   document.getElementById('menu-toggle')?.addEventListener('click', function () {

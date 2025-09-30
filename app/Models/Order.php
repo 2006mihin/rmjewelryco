@@ -2,15 +2,16 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Order extends Model
 {
-    use HasFactory;
-
-    protected $fillable = ['user_id', 'order_date', 'status'];
-
+    protected $fillable = [
+        'user_id',
+        'order_date',
+        'status',
+        'total_price',
+    ];
     public function user()
     {
         return $this->belongsTo(User::class);
@@ -18,16 +19,8 @@ class Order extends Model
 
     public function products()
     {
-        return $this->belongsToMany(Product::class)->withPivot('quantity', 'custom_name');
+        return $this->belongsToMany(Product::class, 'order_product')
+                    ->withPivot('custom_name', 'quantity');
     }
 
-    public function payment()
-    {
-        return $this->hasOne(Payment::class);
-    }
-
-    public function shipment()
-    {
-        return $this->hasOne(Shipment::class);
-    }
 }

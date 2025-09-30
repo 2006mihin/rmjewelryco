@@ -6,7 +6,8 @@ use App\Http\Controllers\AdminAuthController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ProductPageController;
 use App\Http\Controllers\ReviewController;
-
+use App\Http\Controllers\OrderController;
+use App\Http\Controllers\AdminOrdersController;
 
 /*-------------------------------------------------
 | Public Pages (web)
@@ -41,11 +42,14 @@ Route::post('/admin/logout', [AdminAuthController::class, 'logout'])->name('admi
 /*-------------------------------------------------
 | Admin Dashboard / Pages (web)
 -------------------------------------------------*/
-// Only accessible after admin login
-Route::middleware('auth:admin')->group(function () {
-    Route::get('/admin/dashboard', [AdminController::class, 'dashboardView'])->name('admin.dashboard');
-    Route::get('/admin/users', [AdminController::class, 'viewUsers'])->name('admin.users');
-    Route::get('/admin/products/manage', fn() => view('admin.productmanage'))->name('admin.products.manage');
+Route::prefix('admin')->middleware(['auth:admin'])->name('admin.')->group(function () {
+    Route::get('/dashboard', [AdminController::class, 'dashboardView'])->name('dashboard');
+    Route::get('/users', [AdminController::class, 'viewUsers'])->name('users');
+    Route::get('/products/manage', fn() => view('admin.productmanage'))->name('products.manage');
+
+    // Admin Orders
+    Route::get('/orders', [AdminOrdersController::class, 'index'])->name('orders.index');
+    Route::put('/orders/{id}/status', [AdminOrdersController::class, 'updateStatus'])->name('orders.updateStatus');
 });
 
 /*-------------------------------------------------
@@ -53,22 +57,19 @@ Route::middleware('auth:admin')->group(function () {
 -------------------------------------------------*/
 Route::get('/home', fn() => view('home'))->middleware('auth:web')->name('home');
 
-
-Route::middleware('auth:admin')->group(function () {
-    Route::get('/admin/dashboard', [AdminController::class, 'dashboardView'])->name('admin.dashboard');
-    Route::get('/admin/users', [AdminController::class, 'viewUsersWeb'])->name('admin.users'); // Web view
-    Route::get('/admin/products/manage', fn() => view('admin.productmanage'))->name('admin.products.manage');
-});
-
-
-
-
-
-
-
+/*-------------------------------------------------
+| Reviews
+-------------------------------------------------*/
 Route::get('/about', [ReviewController::class, 'index'])->name('about');
+
 Route::middleware('auth:web')->group(function () {
     Route::post('/reviews', [ReviewController::class, 'store'])->name('reviews.store');
     Route::put('/reviews/{id}', [ReviewController::class, 'update'])->name('reviews.update');
     Route::delete('/reviews/{id}', [ReviewController::class, 'destroy'])->name('reviews.destroy');
 });
+
+/*-------------------------------------------------
+| Place Order (User)
+-------------------------------------------------*/
+Route::middleware('auth:web')->post('/place-order', [OrderController::class, 'placeOrder'])->name('order.place');
+Route::get('/admin/users', [AdminController::class, 'viewUsersWeb'])->name('admin.users');

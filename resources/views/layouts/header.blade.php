@@ -1,4 +1,6 @@
 <header class="bg-white shadow sticky top-0 z-50">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" 
+          integrity="sha512-pap9c3n6EhxyU3fB/..." crossorigin="anonymous" referrerpolicy="no-referrer" />
   <div class="container mx-auto flex justify-between items-center px-4 py-4">
     <!-- Logo -->
     <a href="{{ url('/home') }}">

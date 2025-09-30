@@ -5,60 +5,78 @@
     <title>Manage Products</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
-<body class="p-6">
+<body>
+<div class="container mx-auto px-4 py-8">
 
-<h1 class="text-2xl font-bold mb-4">Product Management</h1>
-
-<!-- Back to Dashboard Button -->
-<a href="/admin/dashboard" class="inline-block mb-4 bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600">
-    &larr; Back to Dashboard
-</a>
-
-<form id="productForm" class="mb-6">
-    <input type="hidden" id="productId">
-
-    <div class="mb-2">
-        <label>Product Name:</label>
-        <input type="text" id="productName" class="border p-1 w-full">
+    <!-- Back to Dashboard Button -->
+    <div class="mb-6">
+        <a href="{{ route('admin.dashboard') }}" 
+           class="inline-block bg-gray-200 text-gray-800 px-4 py-2 rounded hover:bg-gray-300 transition">
+            &larr; Back to Dashboard
+        </a>
     </div>
-    <div class="mb-2">
-        <label>Price:</label>
-        <input type="number" step="0.01" id="price" class="border p-1 w-full">
-    </div>
-    <div class="mb-2">
-        <label>Quantity:</label>
-        <input type="number" id="quantity" class="border p-1 w-full">
-    </div>
-    <div class="mb-2">
-        <label>Category:</label>
-        <select id="categoryId" class="border p-1 w-full">
-            <option value="">Select category</option>
-        </select>
-    </div>
-    <div class="mb-2">
-        <label>Image:</label>
-        <input type="file" id="image">
-    </div>
-    <button type="submit" class="bg-blue-500 text-white px-4 py-2">Save Product</button>
-</form>
 
-<hr class="my-4">
+    <!-- Page Title -->
+    <h1 class="text-3xl font-bold mb-6 text-center text-gray-800">Product Management</h1>
 
-<h2 class="text-xl font-bold mb-2">Product List</h2>
-<table class="border w-full">
-    <thead>
-        <tr class="bg-gray-100">
-            <th class="border px-2 py-1">ID</th>
-            <th class="border px-2 py-1">Name</th>
-            <th class="border px-2 py-1">Image</th>
-            <th class="border px-2 py-1">Price</th>
-            <th class="border px-2 py-1">Quantity</th>
-            <th class="border px-2 py-1">Category</th>
-            <th class="border px-2 py-1">Actions</th>
-        </tr>
-    </thead>
-    <tbody id="productList"></tbody>
-</table>
+    <!-- Add / Edit Product Form -->
+    <div class="bg-white p-6 rounded-lg shadow mb-10">
+        <form id="productForm" class="space-y-4">
+            <input type="hidden" id="productId">
+
+            <div>
+                <label class="block font-medium text-gray-700">Product Name:</label>
+                <input type="text" id="productName" class="border p-2 w-full rounded">
+            </div>
+
+            <div>
+                <label class="block font-medium text-gray-700">Price:</label>
+                <input type="number" step="0.01" id="price" class="border p-2 w-full rounded">
+            </div>
+
+            <div>
+                <label class="block font-medium text-gray-700">Quantity:</label>
+                <input type="number" id="quantity" class="border p-2 w-full rounded">
+            </div>
+
+            <div>
+                <label class="block font-medium text-gray-700">Category:</label>
+                <select id="categoryId" class="border p-2 w-full rounded">
+                    <option value="">Select category</option>
+                </select>
+            </div>
+
+            <div>
+                <label class="block font-medium text-gray-700">Image:</label>
+                <input type="file" id="image" class="border p-2 w-full rounded">
+            </div>
+
+            <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition">
+                Save Product
+            </button>
+        </form>
+    </div>
+
+    <!-- Products Table -->
+    <div class="overflow-x-auto rounded-lg shadow-md bg-white p-6">
+        <h2 class="text-2xl font-semibold mb-4 text-gray-700">Product List</h2>
+
+        <table class="min-w-full divide-y divide-gray-200">
+            <thead class="bg-gray-100">
+                <tr>
+                    <th class="px-6 py-3 text-left text-sm font-medium text-gray-600 uppercase">ID</th>
+                    <th class="px-6 py-3 text-left text-sm font-medium text-gray-600 uppercase">Name</th>
+                    <th class="px-6 py-3 text-left text-sm font-medium text-gray-600 uppercase">Image</th>
+                    <th class="px-6 py-3 text-left text-sm font-medium text-gray-600 uppercase">Price</th>
+                    <th class="px-6 py-3 text-left text-sm font-medium text-gray-600 uppercase">Quantity</th>
+                    <th class="px-6 py-3 text-left text-sm font-medium text-gray-600 uppercase">Category</th>
+                    <th class="px-6 py-3 text-left text-sm font-medium text-gray-600 uppercase">Actions</th>
+                </tr>
+            </thead>
+            <tbody id="productList" class="divide-y divide-gray-200"></tbody>
+        </table>
+    </div>
+</div>
 
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 <script>
@@ -81,8 +99,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 option.textContent = cat.category_name;
                 categoryIdSelect.appendChild(option);
             });
-        })
-        .catch(err => console.error('Error loading categories:', err));
+        }).catch(err => console.error('Error loading categories:', err));
 
     // Load products
     function loadProducts() {
@@ -91,24 +108,24 @@ document.addEventListener('DOMContentLoaded', () => {
                 productList.innerHTML = '';
                 res.data.forEach(p => {
                     const tr = document.createElement('tr');
+                    tr.classList.add('hover:bg-gray-50', 'transition');
                     tr.innerHTML = `
-                        <td class="border px-2 py-1">${p.id}</td>
-                        <td class="border px-2 py-1">${p.product_name}</td>
-                        <td class="border px-2 py-1">
-                            ${p.image ? `<img src="/${p.image}" class="w-12 h-12 object-cover" alt="thumb">` : ''}
+                        <td class="px-6 py-3 text-sm text-gray-700">${p.id}</td>
+                        <td class="px-6 py-3 text-sm text-gray-700">${p.product_name}</td>
+                        <td class="px-6 py-3 text-sm text-gray-700">
+                            ${p.image ? `<img src="/${p.image}" class="w-12 h-12 object-cover rounded" alt="thumb">` : ''}
                         </td>
-                        <td class="border px-2 py-1">${p.price}</td>
-                        <td class="border px-2 py-1">${p.quantity}</td>
-                        <td class="border px-2 py-1">${p.category?.category_name || ''}</td>
-                        <td class="border px-2 py-1">
-                            <button onclick="editProduct(${p.id})" class="bg-yellow-400 px-2 py-1">Edit</button>
-                            <button onclick="deleteProduct(${p.id})" class="bg-red-500 text-white px-2 py-1">Delete</button>
+                        <td class="px-6 py-3 text-sm text-gray-700">${p.price}</td>
+                        <td class="px-6 py-3 text-sm text-gray-700">${p.quantity}</td>
+                        <td class="px-6 py-3 text-sm text-gray-700">${p.category?.category_name || ''}</td>
+                        <td class="px-6 py-3 text-sm text-gray-700 space-x-2">
+                            <button onclick="editProduct(${p.id})" class="bg-yellow-400 px-2 py-1 rounded hover:bg-yellow-500 transition">Edit</button>
+                            <button onclick="deleteProduct(${p.id})" class="bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600 transition">Delete</button>
                         </td>
                     `;
                     productList.appendChild(tr);
                 });
-            })
-            .catch(err => console.error('Error loading products:', err));
+            }).catch(err => console.error('Error loading products:', err));
     }
 
     loadProducts();
@@ -116,47 +133,26 @@ document.addEventListener('DOMContentLoaded', () => {
     // Handle form submit (create/update)
     form.addEventListener('submit', e => {
         e.preventDefault();
-
         let id = productIdInput.value;
         let formData = new FormData();
         formData.append('product_name', productNameInput.value);
         formData.append('price', parseFloat(priceInput.value) || 0);
         formData.append('quantity', parseInt(quantityInput.value) || 0);
         formData.append('category_id', parseInt(categoryIdSelect.value) || null);
-        formData.append('admin_id', 1); // default admin for now
-        if (imageInput.files[0]) formData.append('image', imageInput.files[0]);
+        formData.append('admin_id', 1); 
+        if(imageInput.files[0]) formData.append('image', imageInput.files[0]);
+        if(id) formData.append('_method', 'PUT');
 
-        // If updating, add method spoofing to the form data
-        let url = '/api/products' + (id ? `/${id}` : '');
-        if (id) {
-            formData.append('_method', 'PUT');
-        }
-
-        // IMPORTANT: do NOT set Content-Type header manually for multipart/form-data.
-        axios.post(url, formData, {
-            headers: {
-                'X-Requested-With': 'XMLHttpRequest'
-            }
+        axios.post('/api/products' + (id ? `/${id}` : ''), formData, {
+            headers: {'X-Requested-With': 'XMLHttpRequest'}
         })
         .then(res => {
             alert(id ? 'Product updated' : 'Product saved');
-            form.reset();
-            productIdInput.value = '';
+            form.reset(); productIdInput.value = '';
             loadProducts();
-        })
-        .catch(err => {
-            // safer logging: show full error object then any returned response body
-            console.error('Save failed:', err);
-            if (err.response) {
-                console.error('Server response:', err.response.data);
-                alert('Failed to save product: ' + (err.response.data.message || 'Server error. See console.'));
-            } else {
-                alert('Failed to save product. See console for details.');
-            }
-        });
+        }).catch(err => console.error('Error saving product:', err));
     });
 
-    // Edit product
     window.editProduct = function(id) {
         axios.get(`/api/products/${id}`)
             .then(res => {
@@ -166,23 +162,17 @@ document.addEventListener('DOMContentLoaded', () => {
                 priceInput.value = p.price;
                 quantityInput.value = p.quantity;
                 categoryIdSelect.value = p.category_id;
-            })
-            .catch(err => console.error('Error fetching product:', err));
+            }).catch(err => console.error('Error fetching product:', err));
     }
 
-    // Delete product
     window.deleteProduct = function(id) {
         if(confirm('Are you sure?')) {
             axios.delete(`/api/products/${id}`)
-                .then(res => {
-                    alert('Product deleted');
-                    loadProducts();
-                })
+                .then(res => { loadProducts(); })
                 .catch(err => console.error('Error deleting product:', err));
         }
     }
 });
 </script>
-
 </body>
 </html>

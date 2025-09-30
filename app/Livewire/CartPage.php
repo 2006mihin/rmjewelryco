@@ -4,7 +4,9 @@ namespace App\Livewire;
 
 use Livewire\Component;
 use App\Models\Product;
+use App\Models\Order;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Auth;
 
 class CartPage extends Component
 {
@@ -15,11 +17,10 @@ class CartPage extends Component
         // Load existing cart from session
         $this->cart = Session::get('cart', []);
 
-        // Check if user clicked Add to Cart via query param
+        // Optional: handle ?add= query param
         $productId = request()->query('add');
         if ($productId) {
             $this->addToCart($productId);
-            // Remove query param so it doesn’t repeat
             request()->session()->flash('success', 'Product added to cart!');
         }
     }
@@ -57,8 +58,8 @@ class CartPage extends Component
     public function updateQuantity($productId, $quantity)
     {
         $cart = Session::get('cart', []);
-        if(isset($cart[$productId])) {
-            $cart[$productId]['quantity'] = max(1, (int)$quantity);
+        if (isset($cart[$productId])) {
+            $cart[$productId]['quantity'] = max(1, (int) $quantity);
             Session::put('cart', $cart);
             $this->cart = $cart;
         }
@@ -75,20 +76,44 @@ class CartPage extends Component
 
     public function placeOrder()
     {
-        if(empty($this->cart)) {
+        if (empty($this->cart)) {
             session()->flash('error', 'Your cart is empty!');
             return;
         }
 
-        // TODO: save order in database if needed
+        if (!Auth::check()) {
+            session()->flash('error', 'You must be logged in to place an order!');
+            return;
+        }
 
+        // Save order
+        $order = Order::create([
+            'user_id'    => Auth::id(),
+            'order_date' => now(),
+            'status'     => 'pending',
+            'total_price' => $this->total, 
+            // add total column in migration
+        ]);
+
+        // Attach products to order_product table
+        foreach ($this->cart as $item) {
+            $order->products()->attach($item['product_id'], [
+                'custom_name' => $item['name'],
+                'quantity'    => $item['quantity'],
+            ]);
+        }
+
+        // Clear cart
         Session::forget('cart');
         $this->cart = [];
+
         session()->flash('success', 'Order placed successfully!');
     }
 
     public function render()
     {
-        return view('livewire.cart-page');
+        return view('livewire.cart-page', [
+            'total' => $this->total,
+        ]);
     }
 }

@@ -9,5 +9,6 @@ class ReviewController extends Controller
     public function index()
     {
         return view('about'); // No $reviews variable needed
+
     }
 }    
