@@ -55,7 +55,7 @@
 <div class="max-w-6xl mx-auto my-12 px-4">
     @livewire('reviews')
 </div>
-
+@include('layouts.footer')
 @livewireScripts
 </body>
 </html>

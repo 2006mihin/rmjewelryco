@@ -1,6 +1,6 @@
 
 <link rel="stylesheet" href="path/to/font-awesome/css/font-awesome.min.css">
-<footer class="bg-gray-100 text-gray-700 py-8 mt-10">
+<footer class="bg-gray-200 text-gray-700 py-8 mt-10">
     <div class="container mx-auto px-6 grid grid-cols-1 md:grid-cols-4 gap-6 text-center md:text-left items-center md:items-start">
 
         <div>
@@ -10,10 +10,10 @@
         <div>
             <h4 class="catalog-heading">CATALOG</h4>
             <ul class="catalog-list">
-                <li><a href="{{ url('pendants') }}" class="catalog-link">Pendants</a></li>
-                <li><a href="{{ url('earings') }}" class="catalog-link">Earrings</a></li>
-                <li><a href="{{ url('rings') }}" class="catalog-link">Rings</a></li>
-                <li><a href="{{ url('bracelets') }}" class="catalog-link">Bracelets</a></li>
+                <li><a href="{{ route('products.pendants') }}" class="catalog-link">Pendants</a></li>
+                <li><a href="{{ route('products.earrings') }}" class="catalog-link">Earrings</a></li>
+                <li><a href="{{ route('products.rings') }}" class="catalog-link">Rings</a></li>
+                <li><a href="{{ route('products.bracelets') }}" class="catalog-link">Bracelets</a></li>
             </ul>
         </div>
 
