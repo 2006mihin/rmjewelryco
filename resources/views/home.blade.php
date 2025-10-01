@@ -18,7 +18,7 @@
          class="w-full object-cover h-60 sm:h-96 md:h-[600px] opacity-70" />
     <div class="absolute inset-0 flex flex-col justify-center items-center px-5 text-center pt-20 sm:pt-30 md:pt-36">
         <h1 class="text-lg sm:text-2xl md:text-4xl font-bold mb-4">HAPPINESS COMES IN THE BOX OF JEWELRY</h1>
-        <a href="{{ url('rings') }}"
+        <a href="{{ url('products/pendants') }}"
            class="mt-2 px-6 py-2 bg-white text-black font-semibold rounded shadow-md transition duration-300 hover:bg-blue-600 hover:text-white hover:shadow-lg">
            Explore Now
         </a>
