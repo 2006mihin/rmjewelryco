@@ -16,5 +16,8 @@
     </section>
 
     @livewireScripts
+
+    @include('layouts.footer')
 </body>
 </html>
+

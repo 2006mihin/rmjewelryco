@@ -17,7 +17,7 @@
       <a href="{{ url('/home') }}" class="hover:text-gray-600">HOME</a>
       <a href="{{ url('/about') }}" class="hover:text-gray-600">ABOUT</a>
       <div class="relative group">
-        <button class="hover:text-gray-600 flex items-center">JEWELRIES <i class="fa fa-caret-down ml-1"></i></button>
+        <button class="hover:text-gray-600 flex items-center">JEWELRIES <i class="fa fa-caret-down "></i></button>
         <div class="absolute hidden group-hover:block bg-white shadow-lg mt-1 rounded w-40 z-10">
           <a href="{{ route('products.rings') }}" class="block px-4 py-2 hover:bg-gray-200">Rings</a>
           <a href="{{ route('products.pendants') }}" class="block px-4 py-2 hover:bg-gray-200">Pendants</a>

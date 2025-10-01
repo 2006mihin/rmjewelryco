@@ -5,8 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Jewelry Home</title>
     @vite('resources/css/app.css')
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" 
-          integrity="sha512-pap9c3n6EhxyU3fB/..." crossorigin="anonymous" referrerpolicy="no-referrer" />
+
           
 </head>
 <body class="bg-white text-gray-800">
@@ -46,14 +45,14 @@
 
 <!-- CATEGORIES -->
 <section class="container mx-auto px-4 sm:px-6 py-8">
-    <h2 class="text-center text-xl sm:text-2xl font-bold mb-6">CATEGORY</h2>
+    <h2 class="text-center text-xl sm:text-2xl font-bold mb-6">CATEGORIES</h2>
     <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
         @php
             $categories = [
-                ['img' => 'c1.png', 'title' => 'Rings', 'desc' => 'Stunning', 'link' => 'rings'],
-                ['img' => 'c2.png', 'title' => 'Pendants', 'desc' => 'Elegant', 'link' => 'pendants'],
-                ['img' => 'c3.png', 'title' => 'Earrings', 'desc' => 'Elegant', 'link' => 'earrings'],
-                ['img' => 'c4.png', 'title' => 'Bracelets', 'desc' => 'Stylish', 'link' => 'bracelets'],
+                ['img' => 'c1.png', 'title' => 'Rings', 'desc' => 'Stunning', 'link' => 'products/rings'],
+                ['img' => 'c2.png', 'title' => 'Pendants', 'desc' => 'Elegant', 'link' => 'products/pendants'],
+                ['img' => 'c3.png', 'title' => 'Earrings', 'desc' => 'Elegant', 'link' => 'products/earrings'],
+                ['img' => 'c4.png', 'title' => 'Bracelets', 'desc' => 'Stylish', 'link' => 'products/bracelets'],
             ];
         @endphp
 

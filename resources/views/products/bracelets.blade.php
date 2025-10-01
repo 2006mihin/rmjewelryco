@@ -34,6 +34,6 @@
             <p class="text-center text-gray-500">No products found.</p>
         @endif
     </section>
-
+    @include('layouts.footer')
 </body>
 </html>

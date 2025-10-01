@@ -35,7 +35,7 @@
              @livewire('my-orders')
         </div>
     </main>
-
+    @include('layouts.footer')
     @livewireScripts
 </body>
 </html>
