@@ -6,11 +6,11 @@
     <title>All Users - Admin Panel</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
-<body class="bg-gray-100 font-sans antialiased">
+<body class="p-6 bg-gray-400">
 
     <div class="container mx-auto px-4 py-8">
 
-        <!-- Back to Dashboard Button -->
+
         <div class="mb-6">
             <a href="{{ route('admin.dashboard') }}" 
                class="inline-block bg-gray-200 text-gray-800 px-4 py-2 rounded hover:bg-gray-300 transition">
@@ -18,12 +18,11 @@
             </a>
         </div>
 
-        <!-- Page Title -->
-        <h1 class="text-3xl font-bold mb-6 text-center text-gray-800">All Users</h1>
+        <h1 class="text-3xl font-bold mb-6 text-center text-gray-1000">All Users</h1>
 
         <!-- Admins Table -->
         <div class="mb-10">
-            <h2 class="text-2xl font-semibold mb-4 text-gray-700">Admins</h2>
+            <h2 class="text-2xl font-semibold mb-4 text-gray-900">Admins</h2>
             @if($admins->count() > 0)
                 <div class="overflow-x-auto rounded-lg shadow-md">
                     <table class="min-w-full bg-white divide-y divide-gray-200">
@@ -52,7 +51,7 @@
 
         <!-- Users Table -->
         <div>
-            <h2 class="text-2xl font-semibold mb-4 text-gray-700">Users</h2>
+            <h2 class="text-2xl font-semibold mb-4 text-gray-900">Users</h2>
             @if($users->count() > 0)
                 <div class="overflow-x-auto rounded-lg shadow-md">
                     <table class="min-w-full bg-white divide-y divide-gray-200">

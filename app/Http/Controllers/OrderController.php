@@ -30,7 +30,7 @@ class OrderController extends Controller
 
         DB::beginTransaction();
         try {
-            // create order
+            
             $order = Order::create([
                 'user_id' => Auth::id(),
                 'order_date' => Carbon::now()->toDateString(),
@@ -38,7 +38,7 @@ class OrderController extends Controller
                 'total_price' => $total,
             ]);
 
-            // attach products
+            
             foreach ($cart as $item) {
                 OrderProduct::create([
                     'order_id' => $order->id,
@@ -50,7 +50,7 @@ class OrderController extends Controller
 
             DB::commit();
 
-            // clear cart
+            
             Session::forget('cart');
 
             return redirect()->back()->with('success', 'Order placed successfully!');

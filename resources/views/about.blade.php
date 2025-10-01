@@ -12,14 +12,13 @@
 
 @include('layouts.header')
 
-<!-- Banner -->
 <section class="relative bg-black text-white text-center">
     <img src="{{ asset('images/aboutbanner.png') }}" 
          alt="Jewelry"
          class="w-full object-cover h-60 sm:h-96 md:h-[600px]" />
 </section>
 
-<!-- Highlights -->
+
 <div class="flex flex-col sm:flex-row justify-around my-8 text-center gap-6 sm:gap-0 px-4">
     <div>
         <img src="{{ asset('images/gemstone.png') }}" class="mx-auto w-10 h-10">
@@ -35,7 +34,7 @@
     </div>
 </div>
 
-<!-- About Us -->
+
 <div class="max-w-4xl mx-auto px-4 text-center">
     <h2 class="text-3xl font-semibold mb-4">ABOUT US!</h2>
     <p class="text-lg leading-relaxed">
@@ -51,7 +50,7 @@
     </p>
 </div>
 
-<!-- Reviews Section with Dark Card (Video + Form) -->
+
 <div class="max-w-6xl mx-auto my-12 px-4">
     @livewire('reviews')
 </div>

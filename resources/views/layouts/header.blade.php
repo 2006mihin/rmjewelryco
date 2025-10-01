@@ -2,7 +2,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" 
       integrity="sha512-pap9c3n6EhxyU3fB/..." crossorigin="anonymous" referrerpolicy="no-referrer" />
   <div class="container mx-auto flex justify-between items-center px-4 py-4">
-    <!-- Logo -->
+
     <a href="{{ url('/home') }}">
       <img src="{{ asset('images/NLogo.png') }}" alt="Logo" class="h-10" />
     </a>
@@ -18,7 +18,7 @@
       <a href="{{ url('/about') }}" class="hover:text-gray-600">ABOUT</a>
       <div class="relative group">
         <button class="hover:text-gray-600 flex items-center">JEWELRIES <i class="fa fa-caret-down "></i></button>
-        <div class="absolute hidden group-hover:block bg-white shadow-lg mt-1 rounded w-40 z-10">
+        <div class="absolute hidden group-hover:block bg-white shadow-lg mt-0 rounded w-40 z-10">
           <a href="{{ route('products.rings') }}" class="block px-4 py-2 hover:bg-gray-200">Rings</a>
           <a href="{{ route('products.pendants') }}" class="block px-4 py-2 hover:bg-gray-200">Pendants</a>
           <a href="{{ route('products.earrings') }}" class="block px-4 py-2 hover:bg-gray-200">Earrings</a>

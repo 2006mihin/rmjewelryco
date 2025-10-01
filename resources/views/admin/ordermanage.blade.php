@@ -5,7 +5,7 @@
     <title>Manage Orders</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
-<body class="p-6 bg-gray-50">
+<body class="p-6 bg-gray-400">
 
 <div class="mb-6">
     <a href="{{ route('admin.dashboard') }}" 
@@ -40,15 +40,14 @@
                     <td class="p-2">{{ $order->user?->name ?? 'Unknown User' }}</td>
                     <td class="p-2">{{ $order->order_date }}</td>
                     <td class="p-2 capitalize">{{ $order->status }}</td>
-                    <td class="p-2">Rs {{ number_format($order->total_price, 2) }}
+                    <td class="p-2">Rs {{ number_format($order->total_price, 2) }}</td>
                     <td class="p-2">
-                            <ul class="list-none m-0 p-0 flex flex-col items-center">
-                        @foreach($order->products as $product)
-                        <li>{{ $product->product_name }} (x{{ $product->pivot->quantity }})</li>
-                         @endforeach
-    </ul>
-</td>
-
+                        <ul class="list-none m-0 p-0 flex flex-col items-center">
+                            @foreach($order->products as $product)
+                                <li>{{ $product->product_name }} (x{{ $product->pivot->quantity }})</li>
+                            @endforeach
+                        </ul>
+                    </td>
                     <td class="p-2">
                         <form action="{{ route('admin.orders.updateStatus', $order->id) }}" method="POST" class="flex items-center justify-center space-x-2">
                             @csrf

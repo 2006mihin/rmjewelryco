@@ -10,7 +10,7 @@ use Illuminate\Validation\ValidationException;
 
 class UserAuthController extends Controller
 {
-    // ----------------- WEB -----------------
+    
     public function showLoginForm()
     {
         return view('auth.login');
@@ -63,7 +63,8 @@ class UserAuthController extends Controller
         return redirect()->route('welcome');
     }
 
-    // ----------------- API -----------------
+
+
     public function apiLogin(Request $request)
     {
         $request->validate([

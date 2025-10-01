@@ -35,8 +35,8 @@ class AddToCart extends Component
 
         Session::put('cart', $cart);
 
-        // Send a success message without redirect
-        $this->dispatch('cartUpdated'); // JS event if you want a toast
+       
+        $this->dispatch('cartUpdated'); 
         session()->flash('success', "{$product->product_name} added to cart!");
     }
 

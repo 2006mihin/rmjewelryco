@@ -19,7 +19,6 @@ class Reviews extends Component
 
     protected $listeners = ['reviewAdded' => '$refresh'];
 
-    // Add or update review
     public function submitReview()
     {
         $this->validate();
@@ -49,7 +48,7 @@ class Reviews extends Component
         $this->reset(['rating', 'comment']);
     }
 
-    // Load review into edit form
+    // Load review to edit form
     public function editReview($id)
     {
         $review = Review::find($id);
@@ -61,7 +60,7 @@ class Reviews extends Component
         }
     }
 
-    // Delete review
+  
     public function deleteReview($id)
     {
         $review = Review::find($id);

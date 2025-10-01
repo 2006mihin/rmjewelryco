@@ -23,7 +23,7 @@
             <tbody>
                 @foreach($cart as $productId => $item)
                     <tr class="border-b">
-                        <!-- Product Column (Image + Name Centered) -->
+                        
                         <td class="p-2 text-center">
                             <div class="flex flex-col items-center">
                                 <img src="{{ asset($item['image']) }}" 
@@ -33,24 +33,24 @@
                             </div>
                         </td>
 
-                        <!-- Price -->
+                        
                         <td class="p-2 align-middle">
                             Rs {{ number_format($item['price'], 2) }}
                         </td>
 
-                        <!-- Quantity Input -->
+                        
                         <td class="p-2 align-middle">
                             <input type="number" min="1" value="{{ $item['quantity'] }}"
                                    class="w-16 border rounded p-1 text-center"
                                    wire:change="updateQuantity({{ $productId }}, $event.target.value)">
                         </td>
 
-                        <!-- Subtotal -->
+                       
                         <td class="p-2 align-middle">
                             Rs {{ number_format($item['price'] * $item['quantity'], 2) }}
                         </td>
 
-                        <!-- Remove Button -->
+                        
                         <td class="p-2 align-middle">
                             <button wire:click="removeItem({{ $productId }})"
                                     class="bg-red-500 text-white px-3 py-1 rounded">
@@ -62,7 +62,7 @@
             </tbody>
         </table>
 
-        <!-- Total + Place Order -->
+        
         <div class="mt-6 text-right">
             <h3 class="text-xl font-bold">Total: Rs {{ number_format($total, 2) }}</h3>
             <button wire:click="placeOrder"

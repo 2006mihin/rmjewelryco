@@ -8,12 +8,11 @@ use App\Models\User;
 
 class UserController extends Controller
 {
-    // Example: list users
     public function index()
     {
         $users = User::all();
         return view('admin.users.index', compact('users'));
     }
 
-    // Add other CRUD methods (create, store, edit, update, destroy)
+
 }

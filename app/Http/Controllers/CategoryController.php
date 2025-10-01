@@ -8,7 +8,7 @@ class CategoryController extends Controller
 {
     public function index()
     {
-        // return all categories as JSON
+        
         return response()->json(Category::all());
     }
 }

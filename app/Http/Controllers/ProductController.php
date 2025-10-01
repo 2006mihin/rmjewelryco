@@ -22,7 +22,7 @@ class ProductController extends Controller
     public function store(Request $request)
     {
         try {
-            // Validate incoming data
+            
             $request->validate([
                 'product_name' => 'required|string|max:255',
                 'price'        => 'required|numeric',
@@ -38,7 +38,7 @@ class ProductController extends Controller
             $data['admin_id'] = Auth::id() ?? 1;
             
 
-            // Handle image upload
+            
             if ($request->hasFile('image')) {
                 $image = $request->file('image');
                 $imageName = time() . '_' . $image->getClientOriginalName();
@@ -67,18 +67,14 @@ class ProductController extends Controller
         }
     }
 
-    /**
-     * Show a single product
-     */
+    
     public function show($id)
     {
         $product = Product::with('category')->findOrFail($id);
         return response()->json($product);
     }
 
-    /**
-     * Update an existing product
-     */
+    
     public function update(Request $request, $id)
     {
         $product = Product::findOrFail($id);
@@ -125,9 +121,7 @@ class ProductController extends Controller
         }
     }
 
-    /**
-     * Delete a product
-     */
+    
     public function destroy($id)
     {
         try {

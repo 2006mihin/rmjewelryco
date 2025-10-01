@@ -5,10 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>RM Jewelry Co.</title>
 
-    <!-- Fonts -->
+
     <link href="https://fonts.bunny.net/css?family=figtree:400,600&display=swap" rel="stylesheet" />
 
-    <!-- Tailwind -->
+
     @if (file_exists(public_path('build/manifest.json')) || file_exists(public_path('hot')))
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     @endif
@@ -59,7 +59,8 @@
         </p>
 
         <div class="mt-8 flex justify-center gap-4 fade-in-delay">
-            <!-- Use named routes safely -->
+
+        
             <a href="{{ url('/login') }}"
                class="px-6 py-3 bg-white text-black rounded-lg shadow-lg hover:bg-gray-200 transition">
                 Login

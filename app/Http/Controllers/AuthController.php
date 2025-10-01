@@ -20,8 +20,7 @@ class AuthController extends Controller
         /** @var \App\Models\MyUserModel $user **/
         $user = Auth::user();
         $token = $user->createToken('api_token')->plainTextToken;
-        // $token = $user->createToken('api_token')->plainTextToken;
-
+       
         return response()->json([
             'message' => 'Login successful',
             'token' => $token,

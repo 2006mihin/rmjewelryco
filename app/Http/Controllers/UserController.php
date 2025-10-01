@@ -10,18 +10,13 @@ use Illuminate\Validation\Rule;
 
 class UserController extends Controller
 {
-    /**
-     * Display a listing of users.
-     */
+   
     public function index()
     {
-        // You could paginate instead of all() for large datasets
         return UserResource::collection(User::paginate(10));
     }
 
-    /**
-     * Store a newly created user.
-     */
+    
     public function store(Request $request)
     {
         $data = $request->validate([
@@ -38,9 +33,7 @@ class UserController extends Controller
         return new UserResource($user);
     }
 
-    /**
-     * Display the specified user.
-     */
+    
     public function show($id)
     {
         $user = User::findOrFail($id);
@@ -48,9 +41,7 @@ class UserController extends Controller
         return new UserResource($user);
     }
 
-    /**
-     * Update the specified user.
-     */
+    
     public function update(Request $request, $id)
     {
         $user = User::findOrFail($id);
@@ -71,9 +62,7 @@ class UserController extends Controller
         return new UserResource($user);
     }
 
-    /**
-     * Remove the specified user.
-     */
+    
     public function destroy($id)
     {
         $user = User::findOrFail($id);

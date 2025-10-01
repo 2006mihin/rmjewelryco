@@ -12,34 +12,29 @@ use App\Http\Controllers\OrderController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ShipmentController;
 
-/*-------------------------------------------------
-| Public / Test Routes
--------------------------------------------------*/
+
 Route::get('/ping', fn() => response()->json(['message' => 'API is working!']));
 
-// User API login/logout
+// User Admin API login/logout
 Route::post('/login', [UserAuthController::class, 'apiLogin']);
 Route::post('/logout', [UserAuthController::class, 'apiLogout'])->middleware('auth:sanctum');
 
-// Admin API login/logout
 Route::post('/admin/login', [AdminAuthController::class, 'apiLogin']);
 Route::post('/admin/logout', [AdminAuthController::class, 'apiLogout'])->middleware('auth:sanctum');
 
-// Public product/category routes
+
 Route::get('/products', [ProductController::class, 'index']);
 Route::get('/products/{id}', [ProductController::class, 'show']);
 Route::get('/categories', [CategoryController::class, 'index']);
-
-// Optional: public product write routes
 Route::post('/products', [ProductController::class, 'store']);
 Route::put('/products/{id}', [ProductController::class, 'update']);
 Route::delete('/products/{id}', [ProductController::class, 'destroy']);
 
-/*-------------------------------------------------
-| Protected Routes (Sanctum)
--------------------------------------------------*/
+
+//Protected Routes (Sanctum)
+
 Route::middleware('auth:sanctum')->group(function () {
-    Route::apiResource('users', UserController::class);
+    Route::apiResource('users', UserController::class); 
     Route::apiResource('admins', AdminController::class);
 
     Route::post('/categories', [CategoryController::class, 'store']);

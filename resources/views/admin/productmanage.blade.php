@@ -5,10 +5,10 @@
     <title>Manage Products</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
-<body>
+<body class="p-6 bg-gray-500">
+
 <div class="container mx-auto px-4 py-8">
 
-    <!-- Back to Dashboard Button -->
     <div class="mb-6">
         <a href="{{ route('admin.dashboard') }}" 
            class="inline-block bg-gray-200 text-gray-800 px-4 py-2 rounded hover:bg-gray-300 transition">
@@ -16,10 +16,8 @@
         </a>
     </div>
 
-    <!-- Page Title -->
-    <h1 class="text-3xl font-bold mb-6 text-center text-gray-800">Product Management</h1>
+    <h1 class="text-3xl font-bold mb-6 text-center text-gray-1000">Product Management</h1>
 
-    <!-- Add / Edit Product Form -->
     <div class="bg-white p-6 rounded-lg shadow mb-10">
         <form id="productForm" class="space-y-4">
             <input type="hidden" id="productId">
@@ -130,7 +128,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     loadProducts();
 
-    // Handle form submit (create/update)
+    // Handle form submit 
     form.addEventListener('submit', e => {
         e.preventDefault();
         let id = productIdInput.value;

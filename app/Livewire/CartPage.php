@@ -17,7 +17,7 @@ class CartPage extends Component
         // Load existing cart from session
         $this->cart = Session::get('cart', []);
 
-        // Optional: handle ?add= query param
+        
         $productId = request()->query('add');
         if ($productId) {
             $this->addToCart($productId);
@@ -86,16 +86,16 @@ class CartPage extends Component
             return;
         }
 
-        // Save order
+        
         $order = Order::create([
             'user_id'    => Auth::id(),
             'order_date' => now(),
             'status'     => 'pending',
             'total_price' => $this->total, 
-            // add total column in migration
+           
         ]);
 
-        // Attach products to order_product table
+        // products to order_product table
         foreach ($this->cart as $item) {
             $order->products()->attach($item['product_id'], [
                 'custom_name' => $item['name'],

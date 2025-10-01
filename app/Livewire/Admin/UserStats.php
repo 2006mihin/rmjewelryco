@@ -7,7 +7,7 @@ use App\Models\User;
 use App\Models\Admin;
 use App\Models\Order;
 use App\Models\Product;
-use App\Models\Review; // ✅ import Review model
+use App\Models\Review; 
 
 class UserStats extends Component
 {
@@ -16,7 +16,7 @@ class UserStats extends Component
     public $totalUsers;
     public $totalAdmins;
     public $totalCustomers;
-    public $totalReviews; // ✅ new property
+    public $totalReviews; 
 
     protected $listeners = ['refreshUserStats' => '$refresh'];
 
@@ -26,8 +26,8 @@ class UserStats extends Component
         $this->totalProducts  = Product::count();
         $this->totalUsers     = User::count();
         $this->totalAdmins    = Admin::count();
-        $this->totalCustomers = User::count(); // (customers same as users here)
-        $this->totalReviews   = Review::count(); // ✅ count reviews
+        $this->totalCustomers = User::count(); 
+        $this->totalReviews   = Review::count(); 
     }
 
     public function render()

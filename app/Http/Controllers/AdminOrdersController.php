@@ -3,29 +3,45 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use App\Models\Order;
-use App\Models\OrderProduct;
 
 class AdminOrdersController extends Controller
 {
-    // Show all orders
-    public function index()
+    /**
+     * Ensure admin is logged in.
+     */
+    private function requireAdmin()
     {
-        $orders = Order::with('products')->orderBy('id', 'desc')->get();
-        return view('admin.ordermanage', compact('orders'));
+        if (!Auth::guard('admin')->check()) {
+            return redirect()->route('admin.login')->send();
+        }
     }
 
-    // Update order status
-    public function updateStatus(Request $request, $id)
+    /**
+     * List all orders
+     */
+    public function index()
     {
-        $order = Order::findOrFail($id);
-        $request->validate([
-            'status' => 'required|string|in:pending,processing,completed,canceled'
-        ]);
+        $this->requireAdmin();
+    
+        $orders = \App\Models\Order::latest()->get();
+    
+        return view('admin.ordermanage', compact('orders'));
+    }
+    
 
+    /**
+     * Update order status
+     */
+    public function updateStatus($id, Request $request)
+    {
+        $this->requireAdmin();
+
+        $order = Order::findOrFail($id);
         $order->status = $request->status;
         $order->save();
 
-        return redirect()->back()->with('success', 'Order status updated successfully!');
+        return redirect()->back()->with('success', 'Order status updated!');
     }
 }
