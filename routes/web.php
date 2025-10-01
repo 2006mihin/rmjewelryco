@@ -73,3 +73,4 @@ Route::middleware('auth:web')->group(function () {
 -------------------------------------------------*/
 Route::middleware('auth:web')->post('/place-order', [OrderController::class, 'placeOrder'])->name('order.place');
 Route::get('/admin/users', [AdminController::class, 'viewUsersWeb'])->name('admin.users');
+

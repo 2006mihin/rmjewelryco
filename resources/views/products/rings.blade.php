@@ -5,15 +5,27 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Rings</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+
+    
 </head>
 <body class="bg-white text-gray-800 font-sans antialiased">
 
     @include('layouts.header')
 
     <section class="container mx-auto px-4 sm:px-6 py-8">
-        <h2 class="text-center text-2xl font-bold mb-6">RINGS COLLECTION</h2>
+    <div class="w-full bg-gray-300 rounded-full shadow-md flex items-center justify-center relative px-6 py-3 mb-6">
+            
+         
+            <h2 class="text-xl font-bold text-gray-800">
+                RINGS COLLECTION
+            </h2>
+            
+            <a href="{{ route('cart') }}" 
+               class="absolute right-6 flex items-center text-gray-700 hover:text-gray-900 transition">
+                <livewire:cart-counter />
+            </a>
+        </div>
 
-        <!-- Success message -->
         @if(session()->has('success'))
             <div class="bg-green-200 p-3 rounded mb-4 text-center">
                 {{ session('success') }}
@@ -42,6 +54,6 @@
             <p class="text-center text-gray-500">No products found.</p>
         @endif 
     </section>
-    @include('layouts.footer')
+@include('layouts.footer')
 </body>
 </html>

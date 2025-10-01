@@ -1,17 +1,16 @@
 <div class="space-y-6">
 
-    <!-- Review Form with Video -->
+    <!--Review Form-->
     @auth
     <div class="bg-gray-900 text-white p-6 rounded-3xl flex flex-col sm:flex-row gap-6">
 
-        <!-- Video Side -->
+       
         <div class="sm:w-1/2 flex justify-center items-center">
             <video src="{{ asset('images/gem.mp4') }}" autoplay loop muted playsinline
                    class="w-56 h-80 sm:w-64 sm:h-96 object-cover rounded-xl">
             </video>
         </div>
 
-        <!-- Form Side -->
         <form wire:submit.prevent="submitReview" class="flex flex-col gap-3 sm:w-1/2">
             <h3 class="text-2xl font-semibold mb-2">
                 {{ $editId ? 'Edit Your Review' : 'Leave a Review' }}

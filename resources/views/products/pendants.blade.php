@@ -11,7 +11,17 @@
     @include('layouts.header')
 
     <section class="container mx-auto px-4 sm:px-6 py-8">
-        <h2 class="text-center text-2xl font-bold mb-6">PENDANTS COLLECTION</h2>
+    <div class="w-full bg-gray-300 rounded-full shadow-md flex items-center justify-center relative px-6 py-3 mb-6">
+   
+            <h2 class="text-xl font-bold text-gray-800">
+                PENDANTS COLLECTION
+            </h2>
+            
+            <a href="{{ route('cart') }}" 
+               class="absolute right-6 flex items-center text-gray-700 hover:text-gray-900 transition">
+                <livewire:cart-counter />
+            </a>
+        </div>
 
         @if($products->count() > 0)
         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
