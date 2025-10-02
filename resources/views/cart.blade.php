@@ -7,17 +7,17 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @livewireStyles
 </head>
-<body class="font-sans antialiased bg-white text-gray-800">
+<body class="font-sans antialiased bg-white text-gray-800 min-h-screen flex flex-col">
 
     @include('layouts.header')
 
-    <section class="container mx-auto px-4 py-8">
+  
+    <main class="flex-grow container mx-auto px-4 py-8">
         @livewire('cart-page')
-    </section>
+    </main>
 
     @livewireScripts
 
     @include('layouts.footer')
 </body>
 </html>
-
