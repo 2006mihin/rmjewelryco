@@ -9,15 +9,19 @@ use Illuminate\Support\Facades\Hash;
 
 class AdminAuthController extends Controller
 {
+    /**
+     * Show admin login form
+     */
     public function showLoginForm()
     {
         return view('auth.admin-login');
     }
 
-    
+    /**
+     * Handle admin login (Web)
+     */
     public function login(Request $request)
     {
-        
         $request->validate([
             'email'    => 'required|email',
             'password' => 'required|string',
@@ -25,17 +29,29 @@ class AdminAuthController extends Controller
 
         $credentials = $request->only('email', 'password');
 
+        //if email belongs to an admin
+        $admin = Admin::where('email', $request->email)->first();
+        if (!$admin) {
+            return back()->withErrors([
+                'email' => 'Unauthorized access'
+            ])->withInput();
+        }
+
         // Attempt login using 'admin' guard
         if (Auth::guard('admin')->attempt($credentials)) {
             $request->session()->regenerate(); 
             return redirect('/admin/dashboard'); 
         }
 
-        
-        return back()->withErrors(['email' => 'Invalid credentials'])->withInput();
+     
+        return back()->withErrors([
+            'email' => 'Invalid credentials'
+        ])->withInput();
     }
 
-    
+    /**
+     * Handle admin logout (Web)
+     */
     public function logout(Request $request)
     {
         Auth::guard('admin')->logout();       
@@ -44,20 +60,26 @@ class AdminAuthController extends Controller
         return redirect('/admin/login');        
     }
 
-    
+    /**
+     * Handle admin login (API)
+     */
     public function apiLogin(Request $request)
     {
-        
         $request->validate([
             'email' => 'required|email',
             'password' => 'required|string',
         ]);
 
-        
+        // if email belongs to an admin
         $admin = Admin::where('email', $request->email)->first();
+        if (!$admin) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Unauthorized access.'
+            ], 403);
+        }
 
-        
-        if (!$admin || !Hash::check($request->password, $admin->password)) {
+        if (!Hash::check($request->password, $admin->password)) {
             return response()->json([
                 'status' => 'error',
                 'message' => 'Invalid credentials.'
@@ -67,7 +89,6 @@ class AdminAuthController extends Controller
         // Create API token using Sanctum
         $token = $admin->createToken('admin-api-token')->plainTextToken;
 
-       
         return response()->json([
             'status' => 'success',
             'token' => $token,
@@ -75,7 +96,9 @@ class AdminAuthController extends Controller
         ]);
     }
 
-    
+    /**
+     * Handle admin logout (API)
+     */
     public function apiLogout(Request $request)
     {
         if ($request->user()) {
